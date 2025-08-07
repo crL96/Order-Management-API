@@ -1,5 +1,8 @@
 # Order Management API
 
+## Description
+This project is a simple REST API backend that handles store stock, orders and allows users to create, read, update and delete products and orders.
+
 ## Getting Started
 
 You can either run locally or try out the API by making your requests to https://order-management-api-mj7v.onrender.com
@@ -179,3 +182,9 @@ Include the id of the product you wish to edit and the updated quantity, only on
 DELETE /order/:orderId
 Example: DELETE http://localhost:3000/order/1234
 ```
+
+
+## Technologies Used
+Programming Languages: Javascript, (SQL)
+
+Server-side Tools: NodeJS, Express, Prisma ORM, PostgreSQL

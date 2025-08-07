@@ -29,7 +29,51 @@ async function getProduct(req, res) {
     }
 }
 
+async function addProduct(req, res) {
+    try {
+        if (
+            !req.body ||
+            !req.body.name ||
+            !req.body.brand ||
+            !req.body.price ||
+            !req.body.stock
+        ) {
+            res.status(400).send(
+                "Bad request: Include name, brand, price and stock in body"
+            );
+            return;
+        }
+
+        const product = await prisma.product.create({
+            data: {
+                name: req.body.name,
+                brand: req.body.brand,
+                price: Number(req.body.price),
+                stock: Number(req.body.stock),
+            },
+        });
+        res.json({
+            success: true,
+            product: product,
+        });
+    } catch (err) {
+        if (
+            err.message.endsWith(
+                "Unique constraint failed on the fields: (`name`)"
+            )
+        ) {
+            res.status(400).send(
+                "Product name already in use, name needs to be unique"
+            );
+            return;
+        }
+        console.log(err.message);
+        res.status(500).send("Internal server error");
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProduct,
-}
+    addProduct,
+};

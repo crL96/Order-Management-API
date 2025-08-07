@@ -126,8 +126,59 @@ async function createOrder(req, res) {
     }
 }
 
+async function editOrder(req, res) {
+    try {
+        // Update quantity of product
+        let products = undefined;
+        let orderTotal = undefined;
+        if (req.body.product) {
+            const order = await prisma.order.findUnique({
+                where: {
+                    id: req.params.orderId,
+                },
+            });
+            for (let i = 0; i < order.products.length; i++) {
+                if (order.products[i].productId === req.body.product.id) {
+                    // Remove entirely if quantity is 0
+                    if (req.body.product.quantity === 0) {
+                        order.products.splice(i, 1);
+                        break;
+                    }
+                    order.products[i].quantity = req.body.product.quantity;
+                    order.products[i].productTotal =
+                        order.products[i].quantity * order.products[i].price;
+                    break;
+                }
+            }
+            products = order.products;
+            orderTotal = products.reduce((accumulator, product) => {
+                return (accumulator += product.productTotal);
+            }, 0);
+        }
+
+        const order = await prisma.order.update({
+            where: {
+                id: req.params.orderId,
+            },
+            data: {
+                shipped: req.body.shipped,
+                products: products,
+                total: orderTotal,
+            },
+        });
+        res.json({
+            success: true,
+            order: order,
+        });
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("Internal server error");
+    }
+}
+
 module.exports = {
     createOrder,
     getAllOrders,
     getOrder,
+    editOrder,
 };

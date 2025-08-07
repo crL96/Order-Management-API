@@ -1,5 +1,22 @@
 const prisma = require("../config/prisma");
 
+async function getAllOrders(req, res) {
+    try {
+        const orders = await prisma.order.findMany({
+            include: {
+                customer: true,
+            },
+            omit: {
+                customerId: true,
+            }
+        });
+        res.json(orders);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("Internal server error");
+    }
+}
+
 async function createOrder(req, res) {
     try {
         if (
@@ -84,4 +101,5 @@ async function createOrder(req, res) {
 
 module.exports = {
     createOrder,
+    getAllOrders,
 };

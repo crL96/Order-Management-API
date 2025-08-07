@@ -25,3 +25,23 @@ model Product {
 
   @@unique([name, brand])
 }
+
+model Order {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  shipped   Boolean  @default(false)
+  total     Float
+  products  Json
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+}
+
+model Customer {
+  id      String  @id @default(uuid())
+  orders  Order[]
+  name    String
+  address String
+  email   String
+}

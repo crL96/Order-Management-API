@@ -176,9 +176,31 @@ async function editOrder(req, res) {
     }
 }
 
+async function deleteOrder(req, res) {
+    try {
+        const order = await prisma.order.delete({
+            where: {
+                id: req.params.orderId,
+            },
+        })
+        res.json({
+            success: true,
+            message: "Deleted order with id: " + order.id,
+        })
+    } catch (err) {
+        if (err.message.endsWith("No record was found for a delete.")) {
+            res.status(400).send("No order found, invalid orderId")
+            return;
+        }
+        console.log(err.message);
+        res.status(500).send("Internal server error")
+    }
+}
+
 module.exports = {
     createOrder,
     getAllOrders,
     getOrder,
     editOrder,
+    deleteOrder,
 };

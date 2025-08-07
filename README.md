@@ -2,6 +2,10 @@
 
 ## Getting Started
 
+You can either run locally or try out the API by making your requests to https://order-management-api-mj7v.onrender.com
+
+[Go to API endpoint documentation](#api-endpoints)
+
 #### Run locally
 
 1. Make sure you have Node.js installed on your system: https://nodejs.org/en
@@ -156,7 +160,7 @@ Possible to edit shipped status and/or quantity of one product.
 
 Request body JSON:
 {
-    "shipped": true
+    "shipped": true,
     "product": 
         {
             "id": "1234",

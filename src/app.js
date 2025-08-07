@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const inventoryRouter = require("./routes/inventory");
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("Server running");
 });
+app.use("/inventory", inventoryRouter);
 
 const port = process.env.PORT | 3000;
 app.listen(port, () => {

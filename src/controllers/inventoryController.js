@@ -72,8 +72,39 @@ async function addProduct(req, res) {
     }
 }
 
+async function editProduct(req, res) {
+    try {
+        const product = await prisma.product.update({
+            where: {
+                id: req.params.productId,
+            },
+            data: {
+                name: req.body.name,
+                brand: req.body.brand,
+                price: req.body.price ? Number(req.body.price) : undefined,
+                stock: req.body.stock ? Number(req.body.stock) : undefined,
+            }
+        })
+        res.json(product);
+    } catch (err) {
+        if (
+            err.message.endsWith(
+                "Unique constraint failed on the fields: (`name`)"
+            )
+        ) {
+            res.status(400).send(
+                "Product name already in use, name needs to be unique"
+            );
+            return;
+        }
+        console.log(err.message);
+        res.status(500).send("Internal server error");
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProduct,
     addProduct,
+    editProduct,
 };

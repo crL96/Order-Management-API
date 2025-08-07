@@ -104,6 +104,27 @@ async function editProduct(req, res) {
     }
 }
 
+async function deleteProduct(req, res) {
+    try {
+        const product = await prisma.product.delete({
+            where: {
+                id: req.params.productId
+            }
+        })
+        res.json({
+            success: true,
+            message: "Deleted product with id: " + product.id,
+        })
+    } catch (err) {
+        if (err.message.endsWith("No record was found for a delete.")) {
+            res.status(400).send("No product found, invalid productId");
+            return;
+        }
+        console.log(err.message);
+        res.status(500).send("Internal server error");
+    }
+}
+
 async function searchProduct(req, res) {
     try {
         const products = await prisma.product.findMany({
@@ -137,4 +158,5 @@ module.exports = {
     addProduct,
     editProduct,
     searchProduct,
+    deleteProduct,
 };

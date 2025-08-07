@@ -17,6 +17,30 @@ async function getAllOrders(req, res) {
     }
 }
 
+async function getOrder(req, res) {
+    try {
+        const order = await prisma.order.findUnique({
+            where: {
+                id: req.params.orderId,
+            },
+            include: {
+                customer: true,
+            },
+            omit: {
+                customerId: true,
+            }
+        });
+        if (order === null) {
+            res.status(404).send("No order found");
+            return;
+        }
+        res.json(order);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("Internal server error");
+    }
+}
+
 async function createOrder(req, res) {
     try {
         if (
@@ -102,4 +126,5 @@ async function createOrder(req, res) {
 module.exports = {
     createOrder,
     getAllOrders,
+    getOrder,
 };

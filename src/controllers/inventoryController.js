@@ -52,6 +52,7 @@ async function addProduct(req, res) {
                 stock: Number(req.body.stock),
             },
         });
+        product.stockValue = product.price * product.stock;
         res.json({
             success: true,
             product: product,
@@ -84,7 +85,8 @@ async function editProduct(req, res) {
                 price: req.body.price ? Number(req.body.price) : undefined,
                 stock: req.body.stock ? Number(req.body.stock) : undefined,
             }
-        })
+        });
+        product.stockValue = product.price * product.stock;
         res.json(product);
     } catch (err) {
         if (

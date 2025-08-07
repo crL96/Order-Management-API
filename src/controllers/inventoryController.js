@@ -104,9 +104,37 @@ async function editProduct(req, res) {
     }
 }
 
+async function searchProduct(req, res) {
+    try {
+        const products = await prisma.product.findMany({
+            where: {
+                OR: [
+                    {
+                        name: {
+                            contains: req.params.searchterm,
+                            mode: "insensitive",
+                        },
+                    },
+                    {
+                        brand: {
+                            contains: req.params.searchterm,
+                            mode: "insensitive",
+                        },
+                    },
+                ],
+            },
+        });
+        res.json(products);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("Internal server error");
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProduct,
     addProduct,
     editProduct,
+    searchProduct,
 };

@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const inventoryRouter = require("./routes/inventory");
+const orderRouter = require("./routes/order");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.get("/", (req, res) => {
     res.send("Server running");
 });
 app.use("/inventory", inventoryRouter);
+app.use("/order", orderRouter);
 
 const port = process.env.PORT | 3000;
 app.listen(port, () => {

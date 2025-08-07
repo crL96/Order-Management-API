@@ -112,6 +112,9 @@ async function createOrder(req, res) {
             include: {
                 customer: true,
             },
+            omit: {
+                customerId: true,
+            },
         });
         res.json({
             success: true,

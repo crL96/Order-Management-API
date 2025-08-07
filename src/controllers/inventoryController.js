@@ -59,11 +59,11 @@ async function addProduct(req, res) {
     } catch (err) {
         if (
             err.message.endsWith(
-                "Unique constraint failed on the fields: (`name`)"
+                "Unique constraint failed on the fields: (`name`,`brand`)"
             )
         ) {
             res.status(400).send(
-                "Product name already in use, name needs to be unique"
+                "Product name and brand combo already in use, needs to be unique"
             );
             return;
         }
@@ -89,11 +89,11 @@ async function editProduct(req, res) {
     } catch (err) {
         if (
             err.message.endsWith(
-                "Unique constraint failed on the fields: (`name`)"
+                "Unique constraint failed on the fields: (`name`,`brand`)"
             )
         ) {
             res.status(400).send(
-                "Product name already in use, name needs to be unique"
+                "Product name and brand combo already in use, needs to be unique"
             );
             return;
         }

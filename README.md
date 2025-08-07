@@ -4,6 +4,8 @@
 
 You can either run locally or try out the API by making your requests to https://order-management-api-mj7v.onrender.com
 
+(API is hosted using a free tier which shuts down after inactivity, give it some time to boot up)
+
 [Go to API endpoint documentation](#api-endpoints)
 
 #### Run locally
